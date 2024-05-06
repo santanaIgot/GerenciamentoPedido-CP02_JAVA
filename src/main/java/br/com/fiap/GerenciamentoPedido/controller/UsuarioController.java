@@ -75,15 +75,13 @@ public class UsuarioController {
     }
 
     //put do cupom
-    @PutMapping("usuario/{idUsuario}/cupom/{id}")
+    @PutMapping("{idUsuario}/cupom/{idCupom}")
     @Transactional
-    public ResponseEntity<DetalhesUsuarioDto> put(@PathVariable("idUsuario") Long idUsuario,
-                                                  @PathVariable("id") Long id){
+    public ResponseEntity<DetalhesUsuarioDto> addCupom(@PathVariable("idUsuario") Long idUsuario,
+                                                       @PathVariable("idCupom") Long idCupom){
         var usuario = usuarioRepository.getReferenceById(idUsuario);
-        var cupom = cupomRepository.getReferenceById(id);
-        var listaCupom = usuario.getCupom();
-        listaCupom.add(cupom);
-        usuario.setCupom(listaCupom);
+        var cupom = cupomRepository.getReferenceById(idCupom);
+        usuario.getCupoms().add(cupom);
         return ResponseEntity.ok(new DetalhesUsuarioDto(usuario));
     }
 
