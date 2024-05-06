@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("cupom")
+@RequestMapping("/cupom")
 public class CupomController {
     @Autowired
     private CupomRepository cupomRepository;
