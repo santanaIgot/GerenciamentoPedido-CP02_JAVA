@@ -38,9 +38,9 @@ public class Usuario {
     private List<Pedido> pedidos = new ArrayList<>() ;
 
     @ManyToMany
-    @JoinTable(name = "TB_CUPOM", joinColumns = @JoinColumn(name = "cd_usuario"),
+    @JoinTable(name = "TB_CUPOM_USUARIO", joinColumns = @JoinColumn(name = "cd_usuario"),
             inverseJoinColumns = @JoinColumn(name = "cd_cupom"))
-    private List<Cupom> cupom = new ArrayList<>();
+    private Set<Cupom> cupoms = new HashSet<>();
 
     public Usuario (CadastroUsuarioDto dto){
         nome = dto.nome();
