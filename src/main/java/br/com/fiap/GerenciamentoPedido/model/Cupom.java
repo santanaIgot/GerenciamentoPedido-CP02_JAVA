@@ -17,8 +17,9 @@ import java.util.Optional;
 @Entity
 @Table(name = "TB_CUPOM")
 public class Cupom {
-    @GeneratedValue
+
     @Id
+    @GeneratedValue
     @Column(name = "cd_cupom")
     private Long id;
 
@@ -29,8 +30,8 @@ public class Cupom {
     private Double desconto;
 
 
-    @ManyToMany(mappedBy = "cupom")
-    private List<Usuario> usuarios = new ArrayList<>();
+    @ManyToMany(mappedBy = "cupoms" )
+    private List<Usuario> usuarios;
 
 
     public Cupom(CadastroCupomDto dto){
