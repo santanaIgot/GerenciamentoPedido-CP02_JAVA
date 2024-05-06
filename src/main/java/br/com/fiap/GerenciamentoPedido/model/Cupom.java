@@ -1,42 +1,45 @@
 package br.com.fiap.GerenciamentoPedido.model;
 
-import br.com.fiap.GerenciamentoPedido.dto.cupom.CadastrarCupomDto;
+import br.com.fiap.GerenciamentoPedido.dto.cupom.CadastroCupomDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.context.event.EventListener;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter@Setter
 @NoArgsConstructor
+
 
 @Entity
 @Table(name = "TB_CUPOM")
 public class Cupom {
     @GeneratedValue
     @Id
-    @Column(name = "cd_cupom", nullable = false)
+    @Column(name = "cd_cupom")
     private Long id;
 
-    @Column(name = "nm_cupom", nullable = false, length = 32)
+    @Column(name = "nm_cupom", nullable = false)
     private String nomeCupom;
 
     @Column(name = "dc_cupom", nullable = false)
     private Double desconto;
 
 
-
     @ManyToMany(mappedBy = "cupom")
-    private List <Usuario> usuario;
+    private List<Usuario> usuarios = new ArrayList<>();
 
-    public Cupom(CadastrarCupomDto dto){
+
+    public Cupom(CadastroCupomDto dto){
         nomeCupom = dto.nomeCupom();
         desconto = dto.desconto();
 
+
     }
+
 
 
 }

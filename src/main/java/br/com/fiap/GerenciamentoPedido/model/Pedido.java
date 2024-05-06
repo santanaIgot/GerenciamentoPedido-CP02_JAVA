@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter@Setter
 @NoArgsConstructor
@@ -40,6 +42,8 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "cd_usuario", nullable = false)
     private Usuario usuario;
+
+
 
 
 

@@ -5,8 +5,10 @@ import br.com.fiap.GerenciamentoPedido.dto.pedido.DetalhesPedidoDto;
 import br.com.fiap.GerenciamentoPedido.dto.usuario.AtualizacaoUsuarioDto;
 import br.com.fiap.GerenciamentoPedido.dto.usuario.CadastroUsuarioDto;
 import br.com.fiap.GerenciamentoPedido.dto.usuario.DetalhesUsuarioDto;
+import br.com.fiap.GerenciamentoPedido.model.Cupom;
 import br.com.fiap.GerenciamentoPedido.model.Pedido;
 import br.com.fiap.GerenciamentoPedido.model.Usuario;
+import br.com.fiap.GerenciamentoPedido.repository.CupomRepository;
 import br.com.fiap.GerenciamentoPedido.repository.PedidoRepository;
 import br.com.fiap.GerenciamentoPedido.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -28,9 +30,13 @@ public class UsuarioController {
 
     @Autowired
     private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private CupomRepository cupomRepository;
     @PostMapping
     @Transactional
-    public ResponseEntity<DetalhesUsuarioDto> post(@RequestBody @Valid CadastroUsuarioDto dto, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<DetalhesUsuarioDto> post(@RequestBody @Valid CadastroUsuarioDto dto, UriComponentsBuilder uriBuilder,
+                                                   Long id){
         var usuario = new Usuario(dto);
         usuarioRepository.save(usuario);
         var url = uriBuilder.path("/usuario").buildAndExpand(usuario.getIdUsuario()).toUri();
@@ -68,6 +74,19 @@ public class UsuarioController {
         return ResponseEntity.ok(new DetalhesUsuarioDto(usuario));
     }
 
+    //put do cupom
+    @PutMapping("usuario/{idUsuario}/cupom/{id}")
+    @Transactional
+    public ResponseEntity<DetalhesUsuarioDto> put(@PathVariable("idUsuario") Long idUsuario,
+                                                  @PathVariable("id") Long id){
+        var usuario = usuarioRepository.getReferenceById(idUsuario);
+        var cupom = cupomRepository.getReferenceById(id);
+        var listaCupom = usuario.getCupom();
+        listaCupom.add(cupom);
+        usuario.setCupom(listaCupom);
+        return ResponseEntity.ok(new DetalhesUsuarioDto(usuario));
+    }
+
     @DeleteMapping("{id}")
     @Transactional
     public ResponseEntity<Void> remover(@PathVariable("id") Long idUsuario){
@@ -83,7 +102,6 @@ public class UsuarioController {
                                                   UriComponentsBuilder uriBuilder){
         var usuario = usuarioRepository.getReferenceById(idUsuario);
         var pedido = new Pedido(dto,usuario);
-        usuario.adicionar(pedido);
         var uri = uriBuilder.path("pedido/{id}").buildAndExpand(pedido.getId()).toUri();
         return ResponseEntity.created(uri).body(new DetalhesPedidoDto(pedido));
     }
